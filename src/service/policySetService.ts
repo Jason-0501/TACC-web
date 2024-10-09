@@ -47,3 +47,8 @@ export const getPolicies = async () => {
     const response = await axios.get(`${API_URL}/policies`);
     return response.data;
 };
+//獲取所有Resources
+export const getResources = async () => {
+    const response = await axios.get(`${API_URL}/resources`);
+    return response.data;
+};

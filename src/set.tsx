@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './set.css';
-import { createPolicySet, getPolicySets, updatePolicySet, getPolicies, deletePolicySet, deletePolicyFromPolicySet } from './service/policySetService'; // 確保導入了刪除單個 Policy 的方法
+import { createPolicySet, getPolicySets, updatePolicySet, getPolicies,getResources, deletePolicySet, deletePolicyFromPolicySet } from './service/policySetService'; // 確保導入了刪除單個 Policy 的方法
 
 interface PolicySet {
   id: number;
@@ -14,13 +14,20 @@ interface Policy {
   name: string;
 }
 
+interface Resource{
+  id: number;
+  name: string;
+  risk_rank: string;
+  type: string;
+}
+
 const Set: React.FC = () => {
   const [policySets, setPolicySets] = useState<PolicySet[]>([]);
   const [availablePolicies, setAvailablePolicies] = useState<Policy[]>([]);
   const [selectedPolicies, setSelectedPolicies] = useState<string[]>([]);
   const [currentPolicySetId, setCurrentPolicySetId] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [availableResources, setAvailableResources] = useState<Resource[]>([]);
   const [newPolicySetName, setNewPolicySetName] = useState('');
   const [newResourceName, setNewResourceName] = useState('');
 
@@ -44,8 +51,19 @@ const Set: React.FC = () => {
     }
   };
 
+  // 獲取所有 Resources
+  const fetchAvailableResources = async () => {
+    try {
+      const data = await getResources();
+      setAvailableResources(data);
+    } catch (error) {
+      alert('無法取得 Resources 列表，請重試');
+    }
+  };
+
   useEffect(() => {
     fetchPolicySets();
+    fetchAvailableResources();
     fetchAvailablePolicies();
   }, []);
 
@@ -145,7 +163,7 @@ const Set: React.FC = () => {
         <h1>PolicySet管理</h1>
         {/* 新增 PolicySet 的表單 */}
         <form onSubmit={handleCreatePolicySet} className="create-policy-set-form">
-          <div>
+          <div className='inputValue'>
             <label htmlFor="policySetName">PolicySet 名稱:</label>
             <input
               id="policySetName"
@@ -155,7 +173,7 @@ const Set: React.FC = () => {
               required
             />
           </div>
-          <div>
+          <div className='inputValue'>
             <label htmlFor="resourceName">Resource 名稱:</label>
             <input
               id="resourceName"
@@ -165,10 +183,27 @@ const Set: React.FC = () => {
               required
             />
           </div>
-          <button type="submit" className="add-button">新增 PolicySet</button>
+          <button type="submit" className="add-button" id='inputButton'>新增 PolicySet</button>
         </form>
       </div>
 
+
+      {/* Resource 列表區域 */}
+      <div className="resource-list-header">
+        <h2>現有的 Resource 列表</h2>
+      </div>
+
+      <div className="resource-list-container">
+        <div className="resource-list">
+          {availableResources.map((resource) => (
+            <div className="resource-card" key={resource.id}>
+              <h3>Resource 名稱: {resource.name}</h3>
+              <p>類型: {resource.type}</p>  {/* 顯示 type */}
+              <p>風險等級: {resource.risk_rank}</p>  {/* 顯示 risk_rank */}
+            </div>
+          ))}
+        </div>
+      </div>
       {/* 標題區域 */}
       <div className="policySet-list-header">
         <h2>現有的 PolicySet 列表</h2>
