@@ -1,0 +1,242 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* 頁面頂部開始 */
+  height: 100vh;
+}
+
+.App {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 上方的建立 PolicySet 區域 */
+.create-section {
+  max-width: 400px;
+  width: 100%; /* 確保在不同裝置寬度上保持置中 */
+  margin-bottom: 20px;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* 現有的 PolicySet 標題區域 */
+.policySet-list-header {
+  text-align: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 20px;
+  padding-left: 20px;
+}
+
+/* 大卡片包住所有 PolicySet */
+.policySet-list-container {
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center; /* 確保列表置中 */
+}
+
+.policySet-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 每行三個 */
+  gap: 20px; /* 控制每個 PolicySet 之間的間距 */
+  justify-content: center;
+  width: 100%;
+}
+
+.policySet-card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: left; /* 將卡片內文字對齊到左側 */
+}
+
+.policySet-card h3,
+.policySet-card .resource-title,
+.policySet-card .policies-title {
+  font-size: 20px;  /* 調整字體大小 */
+  font-weight: bold;  /* 字體加粗 */
+  margin-bottom: 10px;
+  text-align: left; /* 文字靠左對齊 */
+}
+
+/* 表單按鈕樣式 */
+button, input[type="submit"] {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button.add-button, input[type="submit"].add-button {
+  background-color: rgb(0, 91, 170);
+  color: white;
+}
+
+button.add-button:hover, input[type="submit"].add-button:hover {
+  background-color: rgb(0, 70, 130);
+}
+
+button.delete-button {
+  background-color: red;
+  color: white;
+  margin-top: 10px;
+  width: 100%;
+}
+button.policySet-delete-button {
+  background-color: red;
+  color: white;
+  margin-top: 10px;
+  width: 100%;
+}
+button.policy-add-button {
+  background-color: rgb(0, 91, 170);
+  color: white;
+  margin-top: 10px;
+  width: 100%;
+}
+
+button.delete-button:hover {
+  background-color: darkred;
+}
+
+/* 新增 Policy 按鈕置中 */
+button.add-button {
+  display: inline-block;
+  margin: 0 auto;
+  width: 100%; /* 讓按鈕在卡片內居中顯示 */
+}
+
+/* 彈窗樣式 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  width: 600px; /* 增加彈窗寬度 */
+  max-width: 80%;
+}
+
+button.add-button {
+  background-color: rgb(0, 91, 170);
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 40%;
+  margin-left: 50px;
+}
+
+button.cancel-button {
+  background-color: #ccc;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  
+  width: 40%;
+  margin-left: 10px;
+}
+
+button.add-button:hover {
+  background-color: rgb(0, 70, 130);
+}
+
+button.cancel-button:hover {
+  background-color: #aaa;
+}
+
+/* 政策選取卡片的樣式 */
+.policy-card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 10px;
+}
+
+.policy-card.selected {
+  background-color: rgb(0, 91, 170);
+  color: white;
+}
+
+.policy-card:hover {
+  background-color: #e0e0e0;
+}
+
+.policy-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+/* 將每個 Policy 的文字與 X 刪除按鈕靠左對齊的樣式 */
+.policy-item {
+  display: flex;
+  justify-content: flex-start; /* 讓文字和 X 保持靠左對齊 */
+  align-items: left;
+}
+
+.delete-policy-button {
+  background: none;  /* 移除背景 */
+  border: none;      /* 移除邊框 */
+  color: red;        /* 設置 X 按鈕為紅色 */
+  cursor: pointer;   /* 設置鼠標樣式為可點擊 */
+  font-size: 16px;   /* 調整 X 的大小 */
+  padding: 0;
+  margin-left: 10px; /* 讓 X 按鈕與 Policy 名稱之間留出空間 */
+}
+
+.delete-policy-button:hover {
+  color: darkred;    /* 當滑鼠移到 X 上時，變成深紅色 */
+}
+
+.policySet-card ul {
+  list-style: none; /* 移除點號 */
+  padding: 0; /* 移除內邊距 */
+  margin: 0; /* 移除外邊距 */
+}
+
+.policySet-card li {
+  display: flex;
+  justify-content: space-between; /* 讓文字和 X 刪除按鈕保持兩端對齊 */
+  align-items: center;
+  text-align: left; /* 讓文字靠左對齊 */
+  margin-top: 10px;
+}

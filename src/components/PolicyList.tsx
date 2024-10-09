@@ -22,7 +22,7 @@ interface Match {
     designater: string;
     attributeValue: string;
     op: string;
-    dataType: string | number;
+    dataType:  number|string;
 }
   
 interface AllOf {
@@ -53,13 +53,20 @@ interface MatchRequest {
     op: string;
     dataType: number;
 }
-
+const opOptions = [
+    { label: 'equals', value: 'equals' },
+    { label: 'not equals', value: 'not equals' },
+    { label: 'greater than', value: 'greaterThan' },
+    { label: 'less than', value: 'lessThan' },
+    { label: 'greater than or equal to', value: 'greaterThanOrEqual' },
+    { label: 'less than or equal to', value: 'lessThanOrEqual' },
+];
 const dataTypeOptions = [
     { label: 'STRING', value: 0 },
-    { label: 'NUMBER', value: 1 },
+    { label: 'INTEGER', value: 1 },
     { label: 'BOOLEAN', value: 2 },
-    { label: 'DATE', value: 3 },
-    { label: 'URI', value: 4 },
+    { label: 'TIME', value: 3 },
+    {label: "DOUBLE",value:4}
 ];
 
 const PolicyList: React.FC = () => {
@@ -123,7 +130,20 @@ const PolicyList: React.FC = () => {
           [e.target.name]: e.target.value,
         });
     };
-      
+    const handleOpTypeChange = (e: SelectChangeEvent<string>,field:string) => {
+        if(field==="add"){
+            setNewMatch({
+                ...newMatch,
+                op: e.target.value as string, // 更新 dataType
+            });
+        }else if(field==="edit"){
+            setEditMatchData({
+                ...editMatchData!,
+                op: e.target.value as string, // 更新 dataType
+            });
+        }
+        
+    };  
     const handleDataTypeChange = (e: SelectChangeEvent<number>,field:string) => {
         if(field==="add"){
             setNewMatch({
@@ -231,6 +251,7 @@ const PolicyList: React.FC = () => {
                             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
                                 {allOf.matches.map((match) => (
                                 <Paper key={match.id} sx={{ padding: '20px', width: '300px', backgroundColor: '#f1f1f1'  }}>
+                                    
                                     {editingMatchId === match.id ? (
                                         <Box>
                                             <TextField
@@ -245,15 +266,21 @@ const PolicyList: React.FC = () => {
                                                 value={editMatchData?.attributeValue || ''}
                                                 onChange={handleEditInputChange}
                                             />
-                                            <TextField
+                                            <Select
                                                 label="Operator"
                                                 name="op"
-                                                value={editMatchData?.op || ''}
-                                                onChange={handleEditInputChange}
-                                            />
+                                                value={editMatchData?.op || 'equals'}
+                                                onChange={(e)=>handleOpTypeChange(e,"edit")}
+                                            >
+                                            {opOptions.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                                {option.label}
+                                            </MenuItem>
+                                            ))}
+                                            </Select>
                                             <Select
                                                 label="Data Type"
-                                                value={editMatchData?.dataType ||0}
+                                                value={dataTypeOptions.find(opt => opt.value === editMatchData?.dataType)?.value }
                                                 onChange={(e)=>handleDataTypeChange(e,"edit")}
                                             >
                                             {dataTypeOptions.map((option) => (
@@ -274,7 +301,7 @@ const PolicyList: React.FC = () => {
                                             <Typography><strong>Designater:</strong> {match.designater}</Typography>
                                             <Typography><strong>Attribute Value:</strong> {match.attributeValue}</Typography>
                                             <Typography><strong>Operator:</strong> {match.op}</Typography>
-                                            {/* <Typography><strong>Data Type:</strong> {dataTypeOptions.find(opt => opt.value === match.dataType)?.label}</Typography> */}
+                                            {/* <Typography><strong>Data Type:</strong> {dataTypeOptions.find(opt => opt.label === match.dataType)?.label}</Typography> */}
                                             <Typography><strong>Data Type:</strong> {match.dataType}</Typography>
                                             <Box sx={{ display: 'flex', justifyContent: 'space-evenly', marginTop: '10px' }}>
                                                 <Button onClick={() => handleEditClick(match)} variant="contained" color="primary">
@@ -309,12 +336,18 @@ const PolicyList: React.FC = () => {
                                         value={newMatch.attributeValue}
                                         onChange={handleMatchInputChange}
                                     />
-                                    <TextField
+                                    <Select
                                         label="Operator"
                                         name="op"
                                         value={newMatch.op}
-                                        onChange={handleMatchInputChange}
-                                    />
+                                        onChange={(e)=>handleOpTypeChange(e,"add")}
+                                    >
+                                        {opOptions.map((option) => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                        ))}
+                                    </Select>
                                     <Select
                                         label="Data Type"
                                         value={newMatch.dataType}
