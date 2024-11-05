@@ -1,0 +1,9 @@
+/* src/components/ResourceList.css */
+
+/* 讓卡片每行顯示五個，並設置間距 */
+.resource-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 每行五個卡片 */
+    gap: 10px; /* 卡片之間的間距 */
+    margin-top: 50px; /* 整個列表的上邊距 */
+}

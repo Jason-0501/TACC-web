@@ -19,6 +19,7 @@ interface Resource{
   name: string;
   risk_rank: string;
   type: string;
+  abac_Enabled: boolean
 }
 
 const Set: React.FC = () => {
@@ -200,6 +201,7 @@ const Set: React.FC = () => {
               <h3>Resource 名稱: {resource.name}</h3>
               <p>類型: {resource.type}</p>  {/* 顯示 type */}
               <p>風險等級: {resource.risk_rank}</p>  {/* 顯示 risk_rank */}
+              <p>ABAC 啟用: {resource.abac_Enabled ? "啟用" : "未啟用"}</p> {/* 顯示 abac_Enabled 狀態 */}
             </div>
           ))}
         </div>

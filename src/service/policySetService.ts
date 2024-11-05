@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = "http://localhost:8080"; 
+const API_URL = "http://localhost:8082"; 
 
 // 新增 PolicySet，帶入 PolicySet 的 name 和 Resource 的 name
 export const createPolicySet = async (policySetName: string, resourceName: string) => {
